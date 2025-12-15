@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Daily Dashboard</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body data-theme="dark" data-cursor="default">
+  <div class="blob b1" aria-hidden="true"></div>
+  <div class="blob b2" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <div class="hello">
+          Welcome back,
+          <span class="namePill shimmer" title="Customization is hidden by default. Press Ctrl+Shift+C to toggle.">
+            <img class="ico" src="./icons/user-circle.svg" alt="" />
+            <span class="nameText" id="nameText">user</span>
+
+            <span class="nameEdit custom">
+              <img class="ico" src="./icons/edit-pencil.svg" alt="" />
+              <input id="name" value="user" autocomplete="off" spellcheck="false" />
+            </span>
+          </span>
+        </div>
+        <div class="sub">A clean daily overview: date, countdowns, check-ins, and a small fortune.</div>
+      </div>
+
+      <div class="chipRow">
+        <div class="chip">
+          <img class="ico" src="./icons/clock.svg" alt="" />
+          <span id="timeNow">--:--:--</span>
+        </div>
+
+        <div class="chip">
+          <img class="ico" src="./icons/database.svg" alt="" />
+          <span>Local storage only</span>
+        </div>
+<button class="chipBtn" id="searchBtn" type="button" title="Search ( / or Ctrl+K )">
+  <img class="ico" src="./icons/search.svg" alt="" />
+  <span>Search</span>
+</button>
+
+        <button class="chipBtn" id="themeBtn" type="button" title="Toggle light/dark">
+          <img class="ico" id="themeIco" src="./icons/half-moon.svg" alt="" />
+          <span id="themeLabel">Dark</span>
+        </button>
+
+        <div class="seg" aria-label="Cursor theme">
+          <button id="curDefault" type="button">Default</button>
+          <button id="curLight" type="button">Modern Light</button>
+          <button id="curDark" type="button">Modern Dark</button>
+        </div>
+
+        <div class="chip custom">
+          <img class="ico" src="./icons/settings.svg" alt="" />
+          <span>Customization enabled</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- LEFT -->
+      <section class="card revealable" id="cardLeft">
+        <div class="hd">
+          <div class="k">
+            <img class="ico" src="./icons/calendar.svg" alt="" />
+            Today
+          </div>
+          <div class="pill" id="tz">—</div>
+        </div>
+
+        <div class="bd">
+          <div class="dateWrap">
+            <div class="dateBig">
+              <div class="dayNum" id="dayNum">—</div>
+              <div class="dateMeta">
+                <div class="weekday" id="weekday">—</div>
+                <div class="month" id="monthLine">—</div>
+              </div>
+            </div>
+            <div class="pill" id="dateISO">—</div>
+          </div>
+
+          <div class="mini">
+            <div class="box">
+              <div class="kk">Week</div>
+              <div class="vv" id="weekNum">—</div>
+            </div>
+            <div class="box">
+              <div class="kk">Day of year</div>
+              <div class="vv" id="doy">—</div>
+            </div>
+            <div class="box">
+              <div class="kk">Hint</div>
+              <div class="vv" id="moodHint">—</div>
+            </div>
+          </div>
+
+          <div style="height:14px"></div>
+
+          <div class="hd" style="padding: 0 0 10px; border-bottom:none;">
+            <div class="k">
+              <img class="ico" src="./icons/calendar.svg" alt="" />
+              Countdowns
+            </div>
+            <div class="pill" id="eventCount">0</div>
+          </div>
+
+          <div class="events" id="events"></div>
+
+          <div class="btnRow custom">
+            <button class="primary" id="editEventsBtn" type="button">
+              <img class="ico" src="./icons/settings.svg" alt="" />
+              Manage events
+            </button>
+            <button class="danger" id="resetBtn" type="button">
+              <img class="ico" src="./icons/trash.svg" alt="" />
+              Reset local data
+            </button>
+          </div>
+
+          <div class="sub custom" style="margin-top:10px">
+            Shortcut: Ctrl + Shift + C toggles customization.
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT -->
+      <section class="card revealable" id="cardRight">
+        <div class="hd">
+          <div class="k">
+            <img class="ico" src="./icons/check.svg" alt="" />
+            Daily Check-in
+          </div>
+          <div class="pill" id="checkStatus">—</div>
+        </div>
+
+        <div class="bd">
+          <div class="checkWrap">
+            <div class="checkTop">
+              <div class="streak">
+                <div class="flame" aria-hidden="true"></div>
+                <div>
+                  <div style="font-size:12px; color:var(--muted); font-weight:950; font-family:var(--font-body);">STREAK</div>
+                  <div><b id="streak">0</b> days</div>
+                </div>
+              </div>
+              <div class="pill">Last: <span id="lastCheck">—</span></div>
+            </div>
+
+            <button class="checkBtn primary" id="checkBtn" type="button">
+              <img class="ico" src="./icons/check.svg" alt="" />
+              <span id="checkBtnLabel">Check in</span>
+            </button>
+
+            <!-- Fortune card (now actually visible) -->
+            <div class="card" style="box-shadow:none; margin-top: 10px;">
+              <div class="hd">
+                <div class="k">
+                  <img class="ico" src="./icons/spark.svg" alt="" />
+                  Today’s Fortune
+                </div>
+                <div class="pill" id="fortuneKey">seed</div>
+              </div>
+
+              <div class="bd">
+                <div class="vibe">
+                  <div class="vibeTitle" id="vibeTitle">Today’s vibe</div>
+                  <div class="vibeBig" id="vibeBig">—</div>
+                  <div class="vibeSub" id="vibeSub">—</div>
+                </div>
+
+                <div class="split">
+                  <div class="listBox">
+                    <div class="h"><span class="dot"></span> Do</div>
+                    <ul id="doList"></ul>
+                  </div>
+                  <div class="listBox">
+                    <div class="h"><span class="dot bad"></span> Avoid</div>
+                    <ul id="avoidList"></ul>
+                  </div>
+                </div>
+
+                <div class="facts">
+                  <div class="fact"><div class="k">Color</div><div class="v" id="luckyColor">—</div></div>
+                  <div class="fact"><div class="k">Number</div><div class="v" id="luckyNum">—</div></div>
+                  <div class="fact"><div class="k">Word</div><div class="v" id="powerWord">—</div></div>
+                </div>
+
+                <div style="height:10px"></div>
+                <div class="sub" style="opacity:.9" id="streakHint">
+                  Check in once per day. Missing a day resets the streak.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Modal (custom only) -->
+  <div class="modalBack custom" id="modalBack" role="dialog" aria-modal="true" aria-label="Manage events">
+    <div class="modal">
+      <div class="hd">
+        <div class="k">
+          <img class="ico" src="./icons/settings.svg" alt="" />
+          Manage events
+        </div>
+        <button class="chipBtn" id="closeModalBtn" type="button" title="Close">
+          <img class="ico" src="./icons/xmark.svg" alt="" />
+          Close
+        </button>
+      </div>
+
+      <div class="bd">
+        <div class="modalGrid">
+          <div>
+            <div class="field">
+              <label for="evName">Event name</label>
+              <input id="evName" placeholder="Example: Exam" autocomplete="off" spellcheck="false" />
+            </div>
+            <div class="field">
+              <label for="evDate">Event date (YYYY-MM-DD)</label>
+              <input id="evDate" placeholder="2026-06-10" autocomplete="off" spellcheck="false" />
+            </div>
+
+            <div class="btnRow" style="margin-top:0">
+              <button class="primary" id="addEvBtn" type="button">
+                <img class="ico" src="./icons/plus.svg" alt="" />
+                Add event
+              </button>
+            </div>
+
+            <div class="sub" style="margin-top:10px">
+              Events are stored locally in this browser.
+            </div>
+          </div>
+
+          <div>
+            <div class="sub" style="margin-bottom:8px">Your events</div>
+            <div id="evList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Search Overlay -->
+<div class="searchBack" id="searchBack" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="searchPanel" id="searchPanel" data-manage="0">
+    <div class="searchTop">
+      <div class="searchBar">
+        <img class="ico" src="./icons/search.svg" alt="" />
+        <input id="searchInput" autocomplete="off" spellcheck="false" placeholder="Search the web" />
+        <button class="chipBtn" id="searchGoBtn" type="button" title="Search">
+          <img class="ico" src="./icons/search.svg" alt="" />
+          <span>Go</span>
+        </button>
+      </div>
+
+      <div class="searchTopRow">
+        <div class="searchHint">Enter a URL or type a query. Click outside to close.</div>
+        <button class="chipBtn" id="manageScBtn" type="button" title="Manage shortcuts">
+          <img class="ico" src="./icons/settings.svg" alt="" />
+          <span id="manageScLabel">Manage</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="scGrid" id="scGrid"></div>
+
+    <div class="scEditor" id="scEditor" aria-hidden="true">
+      <div class="scEditorTitle" id="scEditorTitle">Add shortcut</div>
+
+      <div class="field">
+        <label for="scName">Name</label>
+        <input id="scName" placeholder="google" autocomplete="off" spellcheck="false" />
+      </div>
+
+      <div class="field">
+        <label for="scUrl">URL</label>
+        <input id="scUrl" placeholder="https://www.google.com" autocomplete="off" spellcheck="false" />
+      </div>
+
+      <div class="btnRow" style="margin-top:0">
+        <button class="primary" id="scSaveBtn" type="button">
+          <img class="ico" src="./icons/check.svg" alt="" />
+          Save
+        </button>
+        <button id="scCancelBtn" type="button">
+          <img class="ico" src="./icons/xmark.svg" alt="" />
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="./script.js"></script>
+
+</body>
+</html>

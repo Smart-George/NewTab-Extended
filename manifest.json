@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "NewTab Extended",
+  "version": "1.4.1",
+  "description": "A clean, customizable new tab with daily check-ins, events, and smart search.",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+"icons": {
+    "128": "new-tab.png"
+  }
+}
